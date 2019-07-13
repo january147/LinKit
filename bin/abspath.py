@@ -4,11 +4,13 @@
 import os
 import sys
 
+USAGE = '[Usage] : abspath <relative_path>'
+
 def main():
     try:
         filename = sys.argv[1]
     except:
-        print('[Usage] : abspath <relative_path>')
+        print(USAGE)
         return
     
     if not os.path.exists(filename):
@@ -20,6 +22,5 @@ def main():
     except:
         print('Unknown error')
         return
-
 if __name__ == '__main__':
     main()
