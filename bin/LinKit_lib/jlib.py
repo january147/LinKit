@@ -53,7 +53,7 @@ def tar(package_name, dir_path):
 
 # 返回随机字符串
 def random_str(str_len = 8):
-    result_str = ''.join(random.choices(string.ascii_letters, str_len))
+    result_str = ''.join((random.choice(string.ascii_letters) for i in range(str_len)))
     return result_str
 
 # 返回当前时间
