@@ -13,7 +13,7 @@ set -e
 # 这里是需要到的目标文件夹，按需调整
 DES_DIR=~/bin
 # 这里是源文件夹，一般不需要调整
-ORG_DIR=./bin
+ORG_DIR=./daily_tools
 # 记录安装清单文件, 按需修改
 UNINSTALL_MANIFEST=LinKit.manifest
 # 默认是否覆盖已存在文件(n为否, y为是)
@@ -48,7 +48,7 @@ if [ -e $DES_DIR/$UNINSTALL_MANIFEST ]; then
 fi
 
 # do必须换行！！！
-for file in $(ls ./bin) 
+for file in $(ls $ORG_DIR) 
 do
     if [ $keep_file_ext == n ]; then
         new_name=${file%.*}
