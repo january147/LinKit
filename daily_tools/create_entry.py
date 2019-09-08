@@ -14,7 +14,7 @@ desktop_entry_template='''# {tag}
 [Desktop Entry]
 Type={type}
 Name={name}
-Icon={exec}
+Icon={icon}
 Exec={exec}
 Terminal={terminal}
 '''
@@ -63,8 +63,11 @@ def abs_exec_path(exec):
     else:
         cmd, arg = part_exec
 
+    # 如果不是相对路径指定的可执行文件则不做转换
     if os.path.exists(cmd):
         cmd = os.path.abspath(cmd)
+    else:
+        print("warning: start-command is not a valid path")
 
     return cmd + ' ' + arg
     
@@ -76,11 +79,8 @@ def main():
         result_options['name'] = input_options[0]
     except:
         print(usage)
-        # debug info
+        #debug info
         # print(e)
-        return
-    if '-h' in input_options.keys():
-        print(usage)
         return
 
     for option in options_map.keys():
@@ -95,13 +95,14 @@ def main():
         print('warning: the icon doesn\'t exist')
     else:
         result_options['icon'] = os.path.abspath(result_options['icon'])
-
+    
+    result_options['exec'] = abs_exec_path(result_options['exec'])
 
     out_put_content = desktop_entry_template.format(
         tag=tag,
         type=result_options['type'],
         name=result_options['name'],
-        icon=result_options['exec'],
+        icon=result_options['icon'],
         exec=result_options['exec'],
         terminal=result_options['terminal']
     )

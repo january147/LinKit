@@ -2,17 +2,23 @@
 # Date: Sat Jul 13 17:32:55 2019
 # Author: January
 
-# 命令运行错误时停止运行
-set -o errexit
+#####################################################
+# 该脚本用于将文件复制到对应目录, 并记录所复制的文件用于删除 #
+#####################################################
 
-# 双引号“”会抑制波浪线～展开成主目录！！！
+# 命令运行错误时停止运行
+set -e
+
+# !!!双引号“”会抑制波浪线～展开成主目录
 # 这里是需要到的目标文件夹，按需调整
 DES_DIR=~/bin
 # 这里是源文件夹，一般不需要调整
-ORG_DIR=./daily_tools
+ORG_DIR=./bin
+# 记录安装清单文件, 按需修改
 UNINSTALL_MANIFEST=LinKit.manifest
+# 默认是否覆盖已存在文件(n为否, y为是)
 force_install=n
-# 命令类工具在使用时通常没有扩展名比较好
+# 安装时是否保留文件扩展名
 keep_file_ext=n
 
 # ############询问是否保留文件扩展名，按需启用##################
@@ -29,7 +35,7 @@ if [ $# -gt 0 ] && [ $1 == -f ]; then
     force_install=yes
 fi
 
-# 检查清单文件
+# 检查清单文件是否存在
 if [ -e $DES_DIR/$UNINSTALL_MANIFEST ]; then
     echo -n "$DES_DIR/$UNINSTALL_MANIFEST exists, "
         if [ $force_install == n ]; then
@@ -42,7 +48,7 @@ if [ -e $DES_DIR/$UNINSTALL_MANIFEST ]; then
 fi
 
 # do必须换行！！！
-for file in $(ls $ORG_DIR) 
+for file in $(ls ./bin) 
 do
     if [ $keep_file_ext == n ]; then
         new_name=${file%.*}
@@ -54,6 +60,7 @@ do
         echo -n "$DES_DIR/$new_name exists, "
         if [ $force_install == n ]; then
             echo "aborting..."
+            echo "check $DES_DIR/$UNINSTALL_MANIFEST for successfully installed file"
             exit -1
         else
             echo "overwriting..."
@@ -65,10 +72,22 @@ do
     else
         cp $ORG_DIR/$file $DES_DIR/$new_name
     fi
+    # 每复制一个文件,就将其记录在清单文件中
     echo $DES_DIR/$new_name >> $DES_DIR/$UNINSTALL_MANIFEST
 done
 
 # 把安装清单文件文件名加入清单文件中
 echo $DES_DIR/$UNINSTALL_MANIFEST >> $DES_DIR/$UNINSTALL_MANIFEST
-# 放置卸载脚本
+
+# 测试是否有卸载脚本同名文件
+if [ -e $DES_DIR/uninstall ]; then
+    echo -n "uninstall exists, "
+    if [ $force_install == n ]; then
+        echo "aborting..."
+        echo "check $DES_DIR/$UNINSTALL_MANIFEST for successfully installed file"
+        exit -1
+    else
+        echo "overwriting..."
+    fi
+fi
 cp uninstall.sh $DES_DIR/uninstall

@@ -5,10 +5,15 @@
 
 import os
 import datetime
+import sys
 
 def generate_journal():
     date = datetime.date.today()
-    journal_name = date.strftime('%y-%m-%d.md')
+    if len(sys.argv) > 1:
+        title = '-'+sys.argv[1]
+    else:
+        title = ''
+    journal_name = date.strftime('%Y-%m-%d' + title + '.md')
     if os.path.isfile(journal_name):
         print('%s already exists'%(journal_name))
     else:
