@@ -8,11 +8,17 @@ USAGE = '[Usage] : abspath <relative_path>'
 
 def main():
     try:
-        filename = sys.argv[1]
+        arg = sys.argv[1]
     except:
         print(USAGE)
         return
-    
+        
+    if arg == '-h':
+        print(USAGE)
+        return
+    else:
+        filename = arg
+        
     if not os.path.exists(filename):
         print('no such file or directory')
         return

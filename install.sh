@@ -3,13 +3,13 @@
 # Author: January
 
 # 命令运行错误时停止运行
-set -e
+set -o errexit
 
 # 双引号“”会抑制波浪线～展开成主目录！！！
 # 这里是需要到的目标文件夹，按需调整
 DES_DIR=~/bin
 # 这里是源文件夹，一般不需要调整
-ORG_DIR=./bin
+ORG_DIR=./daily_tools
 UNINSTALL_MANIFEST=LinKit.manifest
 force_install=n
 # 命令类工具在使用时通常没有扩展名比较好
@@ -42,7 +42,7 @@ if [ -e $DES_DIR/$UNINSTALL_MANIFEST ]; then
 fi
 
 # do必须换行！！！
-for file in $(ls ./bin) 
+for file in $(ls $ORG_DIR) 
 do
     if [ $keep_file_ext == n ]; then
         new_name=${file%.*}

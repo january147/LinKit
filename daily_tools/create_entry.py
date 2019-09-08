@@ -76,8 +76,11 @@ def main():
         result_options['name'] = input_options[0]
     except:
         print(usage)
-        #debug info
+        # debug info
         # print(e)
+        return
+    if '-h' in input_options.keys():
+        print(usage)
         return
 
     for option in options_map.keys():
