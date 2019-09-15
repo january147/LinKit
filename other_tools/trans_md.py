@@ -118,6 +118,7 @@ def main():
         replace_e = youdao_format_end
         op = '-n'
     else:
+        print("Invalid argument, please check the following usage info")
         print(usage)
         exit(1)
 
