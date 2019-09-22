@@ -14,6 +14,12 @@ STAMP = {
     'sh' : '#!/bin/bash\n'
 }
 
+NEW_FORMAT = {
+    'py' : 'def main():\n'
+           '    pass\n'
+           'if __name__ == "__main__":\n'
+           '    main()\n'
+}
 class Config(object):
     TYPE = 'py'
     AUTHOR = 'January'
@@ -29,6 +35,9 @@ def generateStamp():
     author = Config.COMMENT_FLAG + ' Author: ' + Config.AUTHOR + '\n'
     stamp = STAMP[Config.TYPE] + date + author
     return stamp
+
+def generateNewFormat():
+    return NEW_FORMAT[Config.TYPE]
 
 def stamp():
     try:
@@ -57,7 +66,11 @@ def stamp():
         os.remove(filename)
     # 原文件不存在则跳过该步骤
     except:
-        pass
+        #写入创建的新文件的一些格式化内容
+        if Config.TYPE in NEW_FORMAT.keys():
+            new_file.write(generateNewFormat())
+            
+            
     new_file.close()
     os.rename(working_filename, filename)
     # 修改权限
