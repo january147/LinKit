@@ -52,6 +52,6 @@ else
 fi
 
 echo "ok"
-echo "Now, you can put the scripts that should be run when staring
+echo "Now, you can put the scripts you want to run when staring
 into $start_script_dir and they will be executed automatically 
-everytime you start your computer. "
+everytime you log into your computer. "

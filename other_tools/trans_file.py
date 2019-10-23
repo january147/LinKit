@@ -26,17 +26,19 @@ def receiveFile():
     listen_s.bind(("0.0.0.0", 19999))
     listen_s.listen(4)
     print("waiting for client...")
-    session_s, addr = listen_s.accept()
-    print("connected with " + str(addr))
-    received_file = open("received_file", "wb")
     while True:
-        data = session_s.recv(4096)
-        if len(data) == 0:
-            break
-        received_file.write(data)
-    
-    received_file.close()
-    session_s.close()
+        session_s, addr = listen_s.accept()
+        print("connected with " + str(addr))
+        received_file = open("received_file", "wb")
+        while True:
+            data = session_s.recv(4096)
+            if len(data) == 0:
+                break
+            received_file.write(data)
+        received_file.close()
+        session_s.close()
+        print("client disconnected");
+   
     listen_s.close()
 
 def sendFile(file_path, ip, port):
