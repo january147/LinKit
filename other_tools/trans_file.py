@@ -6,6 +6,35 @@
 import socket
 import sys
 
+# protocol descrption
+# conventions
+#   An expression is a string surrounded by () or [].
+#   <arg> indicates an argument whose name is arg and should be replaced by some valid value described below.
+#   [expression] indicates that the expression is optional.
+#   * indicates that the expression closely before it can be repeated any times(include 0 time, which means it doesn't appear). 
+# 
+# control message  
+#   There are two types of control message, one for asking and the other for responsing.
+#   Each type of the control messages starts by ^ and ends with $, the symbols which are
+#   used to indicate head and tail in regular expressions).
+#   
+#   asking
+#       ^ask/<cmd>/<type>[/<key>/<value>]*$
+#   responsing
+#       ^res/<status>[/<key>/<value>]*$
+#   <cmd>
+#       send
+#   <type>
+#       message
+#       file
+#   <status>
+#       ok
+#       reject
+#   <key>/<value>
+#       The key-value pairs are used for extension.
+#
+
+
 usage='''
 trans_file receive [-p <port>] [-o <filename>]
 trans_file send -f <file> -d <ip> [-p <port>]
