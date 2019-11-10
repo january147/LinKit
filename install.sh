@@ -68,7 +68,7 @@ do
     fi
     
     if [ -d $ORG_DIR/$file ]; then
-        cp -r $ORG_DIR/$file $DES_DIR/$file
+        cp -r $ORG_DIR/$file $DES_DIR/
     else
         cp $ORG_DIR/$file $DES_DIR/$new_name
     fi

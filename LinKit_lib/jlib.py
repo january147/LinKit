@@ -6,6 +6,7 @@ import threading
 import time
 import datetime
 import random
+
 #简单封装pyprind
 class ProgressBar(object):
     def __init__(self, full=100, title='', type='bar'):

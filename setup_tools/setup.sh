@@ -6,10 +6,19 @@ download_dir=~/Download
 log='setup.log'
 startup_setup_script='./create_startup.sh'
 
+# The default choice is not to exit.
+function prompt_exit(){
+    read choose
+    if [ "$choose" = "n" ];then
+        exit 1
+    fi
+}
+
 function check_fail() {
     if [ $? -ne 0 ]; then
-        echo 'failed, aborting...' >> $log
-        exit 1
+        echo 'failed' >> $log
+        echo -n 'An error occurred, should continue?(y/n)'
+        prompt_exit
     else
         echo "ok" >> $log
     fi
