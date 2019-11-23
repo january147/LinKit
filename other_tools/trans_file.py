@@ -6,39 +6,43 @@
 import socket
 import sys
 
-# protocol descrption
-# conventions
-#   An expression is a string surrounded by () or [].
-#   <arg> indicates an argument whose name is arg and should be replaced by some valid value described below.
-#   [expression] indicates that the expression is optional.
-#   * indicates that the expression closely before it can be repeated any times(include 0 time, which means it doesn't appear). 
-# 
-# control message  
-#   There are two types of control message, one for asking and the other for responsing.
-#   Each type of the control messages starts by ^ and ends with $, the symbols which are
-#   used to indicate head and tail in regular expressions).
-#   
-#   asking
-#       ^ask/<cmd>/<type>[/<key>/<value>]*$
-#   responsing
-#       ^res/<status>[/<key>/<value>]*$
-#   <cmd>
-#       send
-#   <type>
-#       message
-#       file
-#   <status>
-#       ok
-#       reject
-#   <key>/<value>
-#       The key-value pairs are used for extension.
-#
-
 
 usage='''
 trans_file receive [-p <port>] [-o <filename>]
 trans_file send -f <file> -d <ip> [-p <port>]
 '''
+
+class Command:
+    S_NULL = 'null'
+    S_RECEIVING = 'receiving'
+    S_OK = 'ok'
+
+    def __init__(self):
+        self.values = dict()
+        self.status = Command.S_NULL
+        self.raw_cmd = ""
+        self.split_raw_cmd = None
+
+    # You can call receiveCmd several times to receive a complete cmd.
+    def receiveCmd(self, cmd_data):
+        if self.status == Command.S_OK:
+            raise RuntimeError('No more data needed')
+        if self.status == Command.S_NULL and cmd_data[0] != "^":
+            raise RuntimeError("invalid cmd")
+        self.raw_cmd += cmd_data
+        if self.raw_cmd[-1] == "$":
+            self.status = Command.S_OK
+            return True
+        else:
+            self.status = Command.S_RECEIVING
+            return False 
+
+    def parseCmd(self):
+        self.split_raw_cmd = self.raw_cmd.strip("^$").split("/")
+        for key_value in self.split_raw_cmd:
+            key, value = key_value.split(":")
+            self.values[key] = value
+
 
 def main():
     if len(sys.argv) < 2:
@@ -49,6 +53,16 @@ def main():
         receiveFile()
     elif function == "send":
         sendFile("test.txt","192.168.1.1", 19999)
+
+
+def protocol_test():
+    listen_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    listen_s.bind(('0.0.0.0', 9999))
+    listen_s.listen(2)
+    while True:
+        session_s, addr = listen_s.accept()
+        print("connected with " + str(addr))
+        
     
 def receiveFile():
     listen_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -66,7 +80,7 @@ def receiveFile():
             received_file.write(data)
         received_file.close()
         session_s.close()
-        print("client disconnected");
+        print("client disconnected")
    
     listen_s.close()
 
