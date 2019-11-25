@@ -1,0 +1,65 @@
+protocol descrption
+
+1. conventions
+  
+  An expression is a string surrounded by () or [].
+  <arg> indicates an argument whose name is arg and should be replaced by some valid value described below.
+  [expression] indicates that the expression is optional.
+  * indicates that the expression closely before it can be repeated any times(include 0 time, which means it doesn't appear). 
+
+2. control message
+
+  Control messages are several key:value pairs seperated by "/", starting by "^" and ending with "$", the symbols which are
+  used to indicate head and tail in regular expressions).
+  
+  control message format
+      ^<key>:<value>[/<key>:<value>]$
+
+  There are several predefined keys and corresponding values listed as follows.  
+  type
+      ask     to send a request
+      res     to reply
+  cmd
+      send    to send data
+  status
+      accept  to accept request 
+      reject  to reject a request
+      failed  to indicate an action failed
+      ok      to indicate an action finished
+  datatype
+      msg     the data sended is a message
+      file    the data sended is a file
+  content 
+      the message content
+  name 
+      the filename
+  size 
+      the file size 
+
+3. procedure
+
+  3.1 send file
+      
+    A [^type:ask/cmd:send/datatype:file/name:test.txt/size:1024$] ---> B
+    |-- A <--- B [^type:res/status:reject$]
+    |-- A <--- B [^type:res/status:accept$]
+        |-- A [file contnent bytes] ---> B
+            |-- A <--- B[^type:res/status:ok$]
+            |-- A <--- B[^type:res/status:failed$]
+    
+    
+  3.2 send message
+    
+    Note: when the message size is less than 100 bytes and includes no "^", "/" , ":" and "$", it can be sended with the control message.
+
+    A [^type:ask/cmd:send/datatype:msg/contnet:a test file content$] ---> B
+    |-- A <--- B [^type:res/status:reject$]
+    |-- A <--- B [^type:res/status:failed$]
+    |-- A <--- B [^type:res/status:ok$]
+
+    A [^type:ask/cmd:send/datatype:msg] ---> B
+    |-- A <--- B [^type:res/status:reject$]
+    |-- A <--- B [^type:res/status:accept$]
+        |-- A [message] ---> B
+            |-- A <--- B[^type:res/status:ok$]
+            |-- A <--- B[^type:res/status:failed$]

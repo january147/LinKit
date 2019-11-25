@@ -8,7 +8,7 @@
 
 # 命令运行错误时停止运行
 set -e
-
+########################config#########################
 # !!!双引号“”会抑制波浪线～展开成主目录
 ########################config##########################
 # 这里是需要到的目标文件夹，按需调整
@@ -21,9 +21,9 @@ UNINSTALL_MANIFEST=LinKit.manifest
 force_install=n
 # 安装时是否保留文件扩展名
 keep_file_ext=n
-######################end config########################
+######################end config#######################
 
-# ############询问是否保留文件扩展名，按需启用##################
+# ##########询问是否保留文件扩展名，按需启用###########
 # echo -n "是否保留文件扩展名？(n) "
 # read keep_file_ext
 # # 比较符号两边需要加上空格！！!
@@ -32,10 +32,32 @@ keep_file_ext=n
 # fi
 # ############询问是否保留文件扩展名##################
 
-# 是否覆盖同名文件
-if [ $# -gt 0 ] && [ $1 == -f ]; then
-    force_install=yes
-fi
+function uninstall_help(){
+    echo "install [-f] [-h] [-d <path>]"
+    echo "-f overwrite existed file"
+    echo "-h show help info"
+    echo "-d <path> install the files to <path>"
+}
+
+
+# 读取选项
+while getopts "fhd:" op
+do
+    if [ "$op" = "f" ]; then
+        force_install=yes
+    elif [ "$op" = "d" ];then
+        if [ -d "$OPTARG" ];then
+            DES_DIR="$OPTARG"
+        else
+            echo "Directory $OPTARG doesn't exist"
+            exit 1
+        fi
+    else
+        uninstall_help
+        exit 0
+    fi
+done
+
 
 # 检查清单文件是否存在
 if [ -e $DES_DIR/$UNINSTALL_MANIFEST ]; then
