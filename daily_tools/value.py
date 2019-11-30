@@ -64,9 +64,11 @@ def main():
             if count % 10 == 0:
                 print()
             count += 1
-    # if output doesn't end up with a line break, add one
-    if (count - 1) % 10 != 0:
-        print()
+        # if output doesn't end up with a line break, add one
+        if (count - 1) % 10 != 0:
+            print()
+    else:
+        print(usage)
         
             
 if __name__ == "__main__":
