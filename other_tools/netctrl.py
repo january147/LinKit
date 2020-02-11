@@ -273,7 +273,7 @@ class NetworkCtrl:
     def add_black_mac(self, mac_addr):
         if self.check_login() == False:
             return False
-        logger.debug("session_token %s"%session_token)
+        logger.debug("session_token %s"%self.session_token)
         mac_filter_setting["IF_ACTION"] = action_type["add"]
         mac_filter_setting["BlackModeset"] = black_mode["on"]
         mac_filter_setting["MacAddr"] = mac_addr
@@ -300,7 +300,7 @@ class NetworkCtrl:
     def rm_black_mac(self, index):
         if self.check_login() == False:
             return False
-        logger.debug("session_token %s"%session_token)
+        logger.debug("session_token %s"%self.session_token)
         mac_filter_setting["IF_ACTION"] = action_type["delete"]
         mac_filter_setting["BlackModeset"] = black_mode["on"]
         mac_filter_setting["_SESSION_TOKEN"] = self.session_token
@@ -418,10 +418,6 @@ class CmdMode:
                     index = int(arg[0])
                 except:
                     print("not valid index")
-                
-                if index + 1 > len(black_list):
-                    print("not valid index")
-                    continue
                 nctl.rm_black_mac(index)
             elif cmd_type == "healthy_mode":
                 on = 30
