@@ -62,4 +62,12 @@ def get_readable_time():
     t = datetime.datetime.now()
     return t.strftime('[%Y-%m-%d %H:%M:%S] ')
 
-
+# 将字节类型转换成16进制的字符串表示
+def bytes2hexstr(data:bytes, prefix:bool=False):
+    if prefix:
+        result = "0x"
+    else:
+        result = ""
+    for item in data:
+        result += "%02x"%(item)
+    return result

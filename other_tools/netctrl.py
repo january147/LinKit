@@ -53,12 +53,14 @@ mac_filter_setting = {
 
 mac_name = {
     "54:04:a6:b1:2f:23" : "home_pc",
-    "3c:0c:db:9a:af:d2" : "tv"
+    "3c:0c:db:9a:af:d2" : "tv",
+    "70:11:24:1f:f8:41" : "ipad"
 }
 
 name_mac = {
     "home_pc" : "54:04:a6:b1:2f:23",
-    "tv" : "3c:0c:db:9a:af:d2"
+    "tv" : "3c:0c:db:9a:af:d2",
+    "ipad" : "70:11:24:1f:f8:41"
 }
 
 def get_options(args, option_list:list):
@@ -265,8 +267,8 @@ class NetworkCtrl:
         if result.status_code != 200 or err != NetworkCtrl.OP_OK:
             print("设置黑名单失败，错误：%s"%(err))
             return False
-        with open("data.html", "wb") as file:
-            file.write(result.content)
+        # with open("data.html", "wb") as file:
+        #     file.write(result.content)
         self.update_local_black_list(result)
         return True
 
@@ -292,8 +294,8 @@ class NetworkCtrl:
         if result.status_code != 200 or err != NetworkCtrl.OP_OK:
             print("增加黑名单失败，错误：%s"%(err))
             return False
-        with open("data.html", "wb") as file:
-            file.write(result.content)
+        # with open("data.html", "wb") as file:
+        #     file.write(result.content)
         self.update_local_black_list(result)
         return True
 
@@ -314,8 +316,8 @@ class NetworkCtrl:
             self.is_login =False
             return False
         self.session_token = get_session_token(result)
-        with open("data.html", "wb") as file:
-            file.write(result.content)
+        # with open("data.html", "wb") as file:
+        #     file.write(result.content)
         err = self.get_error_info(result)
         if result.status_code != 200 or err != NetworkCtrl.OP_OK:
             print("删除黑名单失败，错误：%s"%(err))
