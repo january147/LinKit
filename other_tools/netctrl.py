@@ -13,6 +13,7 @@ import logging
 import _thread
 import os
 import random
+import platform
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger()
@@ -23,8 +24,8 @@ usage="netctrl.py healthy_mode [开启时间] [休息时间] [总时间]"
 
 interacive_help = '''bl 查看当前黑名单
 set on|off 打开或关闭网络
-add name|mac 添加一个设备到黑名单
-rm <index> 删除黑名单中第index个设备'''
+add <name>|<mac> 添加一个设备到黑名单
+rm <index>|<name> 删除黑名单中第index个设备(或者名为name的设备)'''
 
 action_type = {
     "request" : "basic_apply",
@@ -302,6 +303,17 @@ class NetworkCtrl:
     def rm_black_mac(self, index):
         if self.check_login() == False:
             return False
+        # support using name 
+        if type(index) != int:
+            mac = name_mac[index]
+            true_index = -1
+            for i in range(len(self.black_list)):
+                if mac == self.black_list[i]:
+                    true_index = i
+                    break
+            if true_index < 0:
+                return False
+        index = true_index
         logger.debug("session_token %s"%self.session_token)
         mac_filter_setting["IF_ACTION"] = action_type["delete"]
         mac_filter_setting["BlackModeset"] = black_mode["on"]
@@ -419,7 +431,7 @@ class CmdMode:
                 try:
                     index = int(arg[0])
                 except:
-                    print("not valid index")
+                    index = arg[0]
                 nctl.rm_black_mac(index)
             elif cmd_type == "healthy_mode":
                 on = 30
@@ -437,13 +449,25 @@ class CmdMode:
                     off = int(arg[2])
                 except:
                     pass
-                _thread.start_new_thread(os.system, ("deepin-terminal -x %s --healthy_mode %d %d %d"%(os.path.abspath(__file__), on, off, total), ))
+                sys_type = sys.platform
+                if sys_type == "win32":
+                    os.system("start cmd /k python %s --healthy_mode %d %d %d"%(os.path.abspath(__file__), on, off, total) )
+                elif sys_type == "linux":
+                    dist = platform.linux_distribution()[0].lower()
+                    if dist == "deepin":
+                        _thread.start_new_thread(os.system, ("deepin-terminal -x %s --healthy_mode %d %d %d"%(os.path.abspath(__file__), on, off, total), ))
+                    elif dist == "ubuntu":
+                         _thread.start_new_thread(os.system, ("gnome-terminal -- %s --healthy_mode %d %d %d"%(os.path.abspath(__file__), on, off, total), ))
+                    else:
+                        print("not support")
+                else:
+                    print("not support")
             elif cmd_type == "joke":
                 print("你开了一个玩笑")
                 _thread.start_new_thread(os.system, ("deepin-terminal -x %s --joke"%(os.path.abspath(__file__)), ))
             elif cmd_type == "login":
                 nctl.login()
-            elif cmd_type == "h":
+            elif cmd_type.startswith("h"):
                 print(interacive_help)
             elif cmd_type == "q":
                 break
@@ -476,7 +500,4 @@ else:
     elif 'c' in options.keys():
         nctl = NetworkCtrl()
         nctl.set_black_mode(True)
-
-
-
 
