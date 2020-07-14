@@ -52,17 +52,19 @@ mac_filter_setting = {
     "_SESSION_TOKEN" : ""
 }
 
-mac_name = {
-    "54:04:a6:b1:2f:23" : "home_pc",
-    "3c:0c:db:9a:af:d2" : "tv",
-    "70:11:24:1f:f8:41" : "ipad"
-}
 
 name_mac = {
     "home_pc" : "54:04:a6:b1:2f:23",
     "tv" : "3c:0c:db:9a:af:d2",
-    "ipad" : "70:11:24:1f:f8:41"
+    "ipad" : "70:11:24:1f:f8:41",
+    "GM_phone" : "bc:e2:65:65:8a:41"
 }
+
+mac_name = {}
+# init mac_name mapping
+for name in name_mac.keys():
+    mac = name_mac[name]
+    mac_name[mac] = name
 
 def get_options(args, option_list:list):
     arg_p = 1
@@ -171,7 +173,11 @@ class NetworkCtrl:
         print("###########black list#############")
         for i in range(len(self.black_list)):
             mac = self.black_list[i]
-            print("%d.\t%10s\t%17s"%(i, mac_name[mac], mac))
+            if mac not in mac_name.keys():
+                name = "unknown"
+            else:
+                name = mac_name[mac]
+            print("%d.\t%10s\t%17s"%(i, name, mac))
         print("############## end ###############")
 
     def check_login(self):
@@ -313,7 +319,7 @@ class NetworkCtrl:
                     break
             if true_index < 0:
                 return False
-        index = true_index
+            index = true_index
         logger.debug("session_token %s"%self.session_token)
         mac_filter_setting["IF_ACTION"] = action_type["delete"]
         mac_filter_setting["BlackModeset"] = black_mode["on"]

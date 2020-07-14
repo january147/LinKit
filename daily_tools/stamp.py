@@ -86,8 +86,8 @@ def stamp(filename):
             
     new_file.close()
     os.rename(working_filename, filename)
-    # 对脚本文件加入可执行权限
-    if Config.TYPE in EXECUTE_TYPE:
+    # 对脚本文件加入可执行权限(只在linux上使用)
+    if sys.platform == "linux" and Config.TYPE in EXECUTE_TYPE:
         os.system('chmod 755 ' + filename)
     
 def main():
