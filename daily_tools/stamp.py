@@ -19,6 +19,7 @@ COMMENT_FLAG = {
     'py' : '#',
     'sh' : '#',
     'c'  : '//',
+    'h'  : '//',
     'cpp': '//',
     'java' : '//'
 }
@@ -30,11 +31,13 @@ FILE_FORMAT = {
            '    pass\n'
            'if __name__ == "__main__":\n'
            '    main()\n',
+
     'c'  : '#include<stdio.h>\n'
            'int main() {\n'
            '    return 0;\n'
            '}\n'
 }
+
 class Config(object):
     TYPE = 'py'
     AUTHOR = 'January'

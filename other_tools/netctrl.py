@@ -56,7 +56,8 @@ mac_filter_setting = {
 name_mac = {
     "home_pc" : "54:04:a6:b1:2f:23",
     "tv" : "3c:0c:db:9a:af:d2",
-    "ipad" : "70:11:24:1f:f8:41",
+    "ipad" : "70:e7:2c:5a:0e:f5",
+    "ipad_mini" : "9c:f3:87:98:9c:95",
     "GM_phone" : "bc:e2:65:65:8a:41"
 }
 
