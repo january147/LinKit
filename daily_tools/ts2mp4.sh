@@ -4,8 +4,19 @@
 
 set -o errexit
 
+function ts2mp4_help(){
+    echo "This tool is used to create soft links"
+    echo "ts2mp4 <video_pieces_dir> <output_filename>"
+}
+
+if [ "$1" == "-h" ];then
+    ts2mp4_help
+    exit 0
+fi
+
 dir=$1
 des_path=$2
+
 # check parameter
 if [ -z "$dir" ]; then
     dir="."

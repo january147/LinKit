@@ -23,6 +23,7 @@ function rcp_help(){
     echo "[usage]"
     echo "rcp send <local_file> [<remote dir>]"
     echo "rcp get <remote_file> [<remote dir>]"
+    echo "[description] copy file to ssh server"
 }
 
 while getopts "h" op

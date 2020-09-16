@@ -18,6 +18,7 @@ def generate_journal():
         print('%s already exists'%(journal_name))
     else:
         journal_file = open(journal_name, 'w')
+
         journal_file.close()
         print('%s generated'%(journal_name))
 

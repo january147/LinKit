@@ -32,7 +32,7 @@ keep_file_ext=n
 # fi
 # ############询问是否保留文件扩展名##################
 
-function uninstall_help(){
+function install_help(){
     echo "install [-f] [-h] [-d <path>]"
     echo "-f overwrite existed file"
     echo "-h show help info"
@@ -53,7 +53,7 @@ do
             exit 1
         fi
     else
-        uninstall_help
+        install_help
         exit 0
     fi
 done

@@ -5,7 +5,8 @@ import os
 import sys
 from LinKit_lib import options as op
 
-USAGE = '[Usage] : abspath <relative_path>'
+USAGE = '''[Usage] : abspath <relative_path>
+[description] output a file/dir's absolute path'''
 
 def main():
     raw_args, options = op.get_options_v2(sys.argv, ['h'])

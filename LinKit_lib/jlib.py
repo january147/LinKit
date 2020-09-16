@@ -1,4 +1,3 @@
-import pyprind
 import sys
 import os
 import string
@@ -6,27 +5,6 @@ import threading
 import time
 import datetime
 import random
-
-#简单封装pyprind
-class ProgressBar(object):
-    def __init__(self, full=100, title='', type='bar'):
-        self.full = full
-        self.title = title
-        if type == 'bar':
-            self.indicator = pyprind.ProgBar(full, title=title)
-        else:
-            self.indicator == pyprind.ProgPercent(full, title=title)
-    def update(self, current_progress):
-        last_progress = self.indicator.cnt
-        diff = current_progress - last_progress
-        if diff > 0:
-            self.indicator.update(diff)
-    def getProgress(self):
-        return self.indicator.cnt
-    
-    def finish(self):
-        if self.indicator.cnt != self.full:
-            self.update(self.full)
 
 #运行一个执行时间较长的线程，显示动画以指示正在运行
 def user_wait(thread):
@@ -71,3 +49,18 @@ def bytes2hexstr(data:bytes, prefix:bool=False):
     for item in data:
         result += "%02x"%(item)
     return result
+
+class logger:
+
+    def notice(self, msg):
+        print(msg)
+
+    def debug(self, msg):
+        print("[DEBUG] " + msg)
+
+    def warn(self, msg):
+        print("[WARNING] " + msg)
+    
+    def error(self, msg):
+        print("[ERROR] " + msg)
+    

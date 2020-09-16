@@ -37,7 +37,7 @@ if [ $? -eq 0 ]; then
         if [ -e "$file" ];then
             file="link_$file"
         fi
-        # 获取绝对路径，使得即使链接文件移动仍然可用
+        # 获取绝对路径，使得链接文件被移动仍然可用
         abspath=`abspath "$1"`
         ln -s "$abspath" "$file"
         echo $file
