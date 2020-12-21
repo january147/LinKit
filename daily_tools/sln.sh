@@ -10,7 +10,7 @@ keep_suffix=true
 ################end config############
 
 function sln_help(){
-    echo "This tool is used to create soft links"
+    echo "This tool is used to create soft links to file using absolute path"
     echo "sln <filename>"
     echo "Note:<filename> can be multiple or wildcards"
 }

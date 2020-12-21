@@ -92,9 +92,9 @@ do
     fi
     
     if [ -d $ORG_DIR/$file ]; then
-        cp -r $ORG_DIR/$file $DES_DIR/
+        cp -rL $ORG_DIR/$file $DES_DIR/
     else
-        cp $ORG_DIR/$file $DES_DIR/$new_name
+        cp -L $ORG_DIR/$file $DES_DIR/$new_name
     fi
     # 每复制一个文件,就将其记录在清单文件中
     echo $DES_DIR/$new_name >> $DES_DIR/$UNINSTALL_MANIFEST

@@ -5,7 +5,7 @@
 set -o errexit
 
 function ts2mp4_help(){
-    echo "This tool is used to create soft links"
+    echo "This tool is used to merge mpegts files into a complete mp4"
     echo "ts2mp4 <video_pieces_dir> <output_filename>"
 }
 
